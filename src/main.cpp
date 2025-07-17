@@ -57,7 +57,7 @@ const char* psw="xwh123456@";       //wifi密码
 
     tft.setCursor(5,5,2);
     tft.print("Getting information...");
-    attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=511602&key=70a0fb18a69178f1f87b506178dc55cb");  //获取天气信息
+    attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
     attain_time("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Shanghai");     //获取时间信息
 
     WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
