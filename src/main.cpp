@@ -7,6 +7,7 @@
 #include "zh_front_20.h"
 #include <RTClib.h>
 #include <ESP32Time.h>
+#include "mpu.h"
 
 
 
@@ -14,8 +15,9 @@
 const char* id="Mi 10S";            //wifi名称
 const char* psw="xwh123456@";       //wifi密码
 
+IMU imu;  //实例化IMU对象
 
-  void setup() 
+  void setup()  
   {
 
     led_init();
@@ -100,6 +102,11 @@ const char* psw="xwh123456@";       //wifi密码
     tft.setTextColor(TFT_RED);
     tft.setCursor(20,100,2);     
     tft.print(date);
+
+
+    imu.init();  //初始化MPU6050传感器
+
+    
     
   }
   
@@ -107,6 +114,21 @@ const char* psw="xwh123456@";       //wifi密码
   {
     time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
     astronaut_show();
+
+    imu.update();  //更新传感器数据
+
+    // display tab-separated accel/gyro x/y/z values
+    Serial.print("a/g/t:\t");
+    Serial.print(imu.getAccelX()); Serial.print("\t");
+    Serial.print(imu.getAccelY()); Serial.print("\t");
+    Serial.print(imu.getAccelZ()); Serial.print("\t");
+    Serial.print(imu.getGyroX()); Serial.print("\t");
+    Serial.print(imu.getGyroY()); Serial.print("\t");
+    Serial.print(imu.getGyroZ()); Serial.print("\t");
+    Serial.println(imu.getTemperature());
+
+    delay(100);
+
   }
   
 
