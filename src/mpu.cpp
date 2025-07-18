@@ -3,6 +3,18 @@
 #include <I2Cdev.h>
 #include <Wire.h>
 
+int IMU::init()
+{
+    Wire.begin();
+    Wire.setClock(400000); // 设置I2C时钟频率为400kHz
+    mpuA.initialize();
+    if (!mpuA.testConnection()) {
+        return -1; // 连接失败
+    }
+    
+    return 0; // 成功
+}
+
 
 void IMU::update()
 {

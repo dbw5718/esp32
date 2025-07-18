@@ -9,6 +9,7 @@ class IMU
 private:
     /* data */
     MPU6050 mpuA;  //实例化MPU6050对象
+    int init(); //初始化MPU6050
     int16_t ax, ay, az; //加速度计数据
     int16_t gx, gy, gz; //陀螺仪数据
     int16_t temp; //温度数据
