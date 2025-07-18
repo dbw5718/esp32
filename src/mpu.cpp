@@ -6,8 +6,8 @@
 
 void IMU::update()
 {
-    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-    temp = mpu.getTemperature();
+    mpuA.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+    temp = mpuA.getTemperature();
 }
 
 int16_t IMU::getAccelX()

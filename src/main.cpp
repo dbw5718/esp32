@@ -12,8 +12,8 @@
 
 
 //定义两个字符串指针常量
-const char* id="Mi 10S";            //wifi名称
-const char* psw="xwh123456@";       //wifi密码
+const char* id="301";            //wifi名称
+const char* psw="Chrome...1314@";       //wifi密码
 
 IMU imu;  //实例化IMU对象
 
