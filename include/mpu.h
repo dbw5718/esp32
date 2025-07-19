@@ -1,5 +1,5 @@
 #ifndef MPU_H
-#define mpu.h
+#define _MPU_H
 
 #include <MPU6050.h>
 
@@ -9,13 +9,10 @@ class IMU
 private:
     /* data */
     MPU6050 mpuA;  //实例化MPU6050对象
-    int init(); //初始化MPU6050
     int16_t ax, ay, az; //加速度计数据
     int16_t gx, gy, gz; //陀螺仪数据
     int16_t temp; //温度数据
 public:
-    IMU(/* args */);
-    ~IMU();
     int init(); //初始化MPU6050
     void update(); //更新传感器数据
     int16_t getAccelX();
