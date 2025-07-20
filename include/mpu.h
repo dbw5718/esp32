@@ -3,7 +3,6 @@
 
 #include <MPU6050.h>
 
-
 class IMU
 {
 private:
