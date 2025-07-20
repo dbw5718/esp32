@@ -7,15 +7,13 @@
 #include "zh_front_20.h"
 #include <RTClib.h>
 #include <ESP32Time.h>
-#include "mpu.h"
 
 
 
 //定义两个字符串指针常量
 const char* id="301";            //wifi名称
-const char* psw="Chrome...1314@";       //wifi密码
+const char* psw="Chrome1314...@";       //wifi密码
 
-IMU imu;  //实例化IMU对象
 
   void setup()  
   {
@@ -104,7 +102,6 @@ IMU imu;  //实例化IMU对象
     tft.print(date);
 
 
-    imu.init();  //初始化MPU6050传感器
 
     
     
@@ -114,18 +111,6 @@ IMU imu;  //实例化IMU对象
   {
     time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
     astronaut_show();
-
-    imu.update();  //更新传感器数据
-
-    // display tab-separated accel/gyro x/y/z values
-    Serial.print("a/g/t:\t");
-    Serial.print(imu.getAccelX()); Serial.print("\t");
-    Serial.print(imu.getAccelY()); Serial.print("\t");
-    Serial.print(imu.getAccelZ()); Serial.print("\t");
-    Serial.print(imu.getGyroX()); Serial.print("\t");
-    Serial.print(imu.getGyroY()); Serial.print("\t");
-    Serial.print(imu.getGyroZ()); Serial.print("\t");
-    Serial.println(imu.getTemperature());
 
     delay(100);
 
