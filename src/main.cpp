@@ -1,5 +1,3 @@
-#include <WiFi.h>
-#include <SPI.h>
 #include <TFT_eSPI.h>
 #include "basic.h"
 #include <HTTPClient.h>
