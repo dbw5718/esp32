@@ -7,6 +7,7 @@
 #include "zh_front_20.h"
 #include <RTClib.h>
 #include <ESP32Time.h>
+#include "draw.h"
 
 
 
