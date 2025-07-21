@@ -278,6 +278,9 @@ void attain_time(String url);
 void astronaut_show(void);
 void time_show(void);
 void time_show(uint8_t hour,uint8_t minute,uint8_t second);
+void weather_show(void);
+void weather_show(String city,String weather_condition,String winddirection,int tem);
+void show_city(String city);
 
 
 extern TFT_eSPI tft;

@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <RTClib.h>
 #include <ESP32Time.h>
+#include "zh_front_20.h"
 
 TFT_eSPI tft;       //实例化
 ESP32Time rtc(0);   //时间补偿
@@ -228,6 +229,42 @@ void time_show(uint8_t hour,uint8_t minute,uint8_t second)
     }
 }
 
+void show_city(String city)
+{
+  tft.setTextColor(TFT_BLACK);
+  tft.setCursor(5,5,2);
+  tft.loadFont(font_20);
+  if(city.length()>6)
+  {
+    tft.drawString(city.substring(0,6),5,5);
+  }
+  else
+  {
+    tft.drawString(city,5,5);
+  }
+  tft.unloadFont();
+}
 
+void weather_show(String weather_condition,String winddirection,int tem)
+{
+  tft.fillScreen(TFT_WHITE);
+  tft.setTextColor(TFT_BLACK);
+  
+  tft.loadFont(font_20);
+  tft.drawString(weather_condition,62,tft.getCursorY()); //天气状况
+  tft.unloadFont();
+  
+  tft.setCursor(120,tft.getCursorY(),2);
+  tft.print(tem); //温度
+  tft.loadFont(font_20);
+  tft.drawString("℃", tft.getCursorX(),tft.getCursorY());
+  tft.unloadFont();
+  
+  //显示风向
+  tft.setTextColor(TFT_RED);
+  tft.setCursor(20,100,2);     
+  tft.print(winddirection);
+
+}
 
 
