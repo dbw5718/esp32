@@ -52,7 +52,7 @@
 //#define ILI9481_DRIVER
 //#define ILI9486_DRIVER
 //#define ILI9488_DRIVER     // WARNING: Do not connect ILI9488 display SDO to MISO if other devices share the SPI bus (TFT SDO does NOT tristate when CS is high)
-//#define ST7789_DRIVER      // Full configuration option, define additional parameters below for this display
+#define ST7789_DRIVER      // Full configuration option, define additional parameters below for this display
 //#define ST7789_2_DRIVER    // Minimal configuration option, define additional parameters below for this display
 //#define R61581_DRIVER
 //#define RM68140_DRIVER
@@ -85,10 +85,10 @@
 // #define TFT_WIDTH  128
 // #define TFT_WIDTH  172 // ST7789 172 x 320
 // #define TFT_WIDTH  170 // ST7789 170 x 320
-// #define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
+#define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
 // #define TFT_HEIGHT 160
 // #define TFT_HEIGHT 128
-// #define TFT_HEIGHT 240 // ST7789 240 x 240
+#define TFT_HEIGHT 240 // ST7789 240 x 240
 // #define TFT_HEIGHT 320 // ST7789 240 x 320
 // #define TFT_HEIGHT 240 // GC9A01 240 x 240
 
@@ -221,7 +221,7 @@
 // The hardware SPI can be mapped to any pins
 
 //#define TFT_MOSI 15 // In some display driver board, it might be written as "SDA" and so on.
-//#define TFT_SCLK 14
+#define TFT_SCLK 15
 //#define TFT_CS   5  // Chip select control pin
 //#define TFT_DC   27  // Data Command control pin
 //#define TFT_RST  33  // Reset pin (could connect to Arduino RESET pin)
@@ -360,8 +360,8 @@
 // #define SPI_FREQUENCY   5000000
 // #define SPI_FREQUENCY  10000000
 // #define SPI_FREQUENCY  20000000
-#define SPI_FREQUENCY  27000000
-// #define SPI_FREQUENCY  40000000
+//#define SPI_FREQUENCY  27000000
+#define SPI_FREQUENCY  40000000
 // #define SPI_FREQUENCY  55000000 // STM32 SPI1 only (SPI2 maximum is 27MHz)
 // #define SPI_FREQUENCY  80000000
 
