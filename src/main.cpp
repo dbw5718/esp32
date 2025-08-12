@@ -59,14 +59,12 @@ const char* passwd="Chrome1314...@";       //wifi密码
 
     tft.setCursor(5,5,2);
     tft.print("Getting information...");
-    attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
-    attain_time("https://cn.apihz.cn/api/time/getapi.php?id=88888888&key=88888888&type=2");     //获取时间信息
+    //attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
+    //attain_time("https://cn.apihz.cn/api/time/getapi.php?id=88888888&key=88888888&type=2");     //获取时间信息
   
 
     WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
-
     rtc.setTime(second, minute, hour, day, month, year);  //将获取到的时间信息写入内部时钟
-    
     tft.fillScreen(TFT_WHITE);
 
     // tft.drawLine(0,50,240,50,TFT_BLACK);
@@ -74,9 +72,9 @@ const char* passwd="Chrome1314...@";       //wifi密码
     // tft.drawLine(150,0,150,50,TFT_BLACK);
     // tft.drawLine(0,100,240,100,TFT_BLACK);
 
-    tft.setTextColor(TFT_DARKGREY);
+    //tft.setTextColor(TFT_DARKGREY);
     
-    time_show(hour, minute, second); //显示时间
+    //time_show(hour, minute, second); //显示时间
     // Serial.println(hour);
     // Serial.println(minute);
     // Serial.println(second);
@@ -86,9 +84,9 @@ const char* passwd="Chrome1314...@";       //wifi密码
   
   void loop()
   {
-    time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
-    astronaut_show();
-    delay(100);
+    //time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
+    //astronaut_show();
+    //delay(100);
 
   }
   
