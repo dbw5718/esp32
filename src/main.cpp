@@ -8,6 +8,7 @@
 #include <RTClib.h>
 #include <ESP32Time.h>
 #include "draw.h"
+#include <lvgl.h>
 
 
 
