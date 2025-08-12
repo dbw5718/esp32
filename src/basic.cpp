@@ -116,7 +116,7 @@ HTTPClient http;
             DynamicJsonDocument doc(1024);
             DeserializationError error = deserializeJson(doc, response);
 
-            date_information = doc["dateTime"].as<String>();
+            date_information = doc["msg"].as<String>();
             
             date = date_information.substring(0,10);
             year = date_information.substring(0,4).toInt();
@@ -125,6 +125,10 @@ HTTPClient http;
             hour = date_information.substring(11,13).toInt();
             minute = date_information.substring(14,16).toInt();
             second = date_information.substring(17,19).toInt();
+
+            Serial.println(hour);
+            Serial.println(minute);
+            Serial.println(second);
             
           }
         }

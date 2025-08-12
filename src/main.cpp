@@ -13,7 +13,7 @@
 
 //定义两个字符串指针常量
 const char* name="301";            //wifi名称
-const char* passwd="Chrome...1314@";       //wifi密码
+const char* passwd="Chrome1314...@";       //wifi密码
 
 
   void setup()  
@@ -59,7 +59,8 @@ const char* passwd="Chrome...1314@";       //wifi密码
     tft.setCursor(5,5,2);
     tft.print("Getting information...");
     attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
-    attain_time("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Shanghai");     //获取时间信息
+    attain_time("https://cn.apihz.cn/api/time/getapi.php?id=88888888&key=88888888&type=2");     //获取时间信息
+  
 
     WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
 
@@ -75,14 +76,17 @@ const char* passwd="Chrome...1314@";       //wifi密码
     tft.setTextColor(TFT_DARKGREY);
     
     time_show(hour, minute, second); //显示时间
-    weather_show(city,weather_condition,winddirection,tem); //显示天气信息
+    // Serial.println(hour);
+    // Serial.println(minute);
+    // Serial.println(second);
+
+    //weather_show(city,weather_condition,winddirection,tem); //显示天气信息
   }
   
   void loop()
   {
     time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
     astronaut_show();
-
     delay(100);
 
   }

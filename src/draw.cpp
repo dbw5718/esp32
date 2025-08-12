@@ -42,23 +42,25 @@ void astronaut_show(){
 }
 
 void time_show(int hour, int minute, int second) {
-    tft.setTextColor(TFT_WHITE,TFT_BLACK); // Orange
+    tft.setTextColor(TFT_BLACK); // Orange
     tft.setTextSize(2);
 
     char timeStr[9];
     sprintf(timeStr, "%02d:%02d:%02d", hour, minute, second);
+
+    //Serial.println(timeStr);
 
     int textWidth = tft.textWidth(timeStr);
     int textHeight = 16; // Assuming text height is 16 pixels
     int x = (tft.width() - textWidth) / 2; // Center
     int y = (tft.height() - textHeight) / 2; // Center
 
-    tft.fillRect(x, y, textWidth, textHeight, TFT_BLACK); // Clear the area
+    tft.fillRect(x, y, textWidth, textHeight, TFT_WHITE); // Clear the area
     tft.drawString(timeStr, x, y, 2); // Draw the time string
 }
 
 void weather_show(String city, String weather_condition, String winddirection, int temp) {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);  // 设置文本颜色为白色，背景色为黑色
+    tft.setTextColor(TFT_BLACK);  // 设置文本颜色为白色，背景色为黑色
     tft.setTextSize(2);  // 设置文本大小
 
     // 城市名称
