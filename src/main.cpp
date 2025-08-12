@@ -20,7 +20,7 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 }
   void setup()  
   {
-    
+
     led_init();
     tft.init(); 
     tft.fillScreen(TFT_WHITE);
@@ -29,6 +29,8 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
     tft.setTextSize(1);
     tft.setCursor(0,0,2);
     tft.println("Hello, LVGL!");
+
+    
   }
   
   void loop()
