@@ -1,47 +1,53 @@
-#include <SPI.h>
-#include <TFT_eSPI.h>
 #include <lvgl.h>
-#include "basic.h"
+#include <TFT_eSPI.h>
+#include <stdlib.h>
+#include <time.h>
 
-#define LV_HOR_RES_MAX 240 // Set this to your display's horizontal resolution
+#include <TFT_eSPI.h>
 
+// 初始化TFT对象
+TFT_eSPI tft = TFT_eSPI();
 
-TFT_eSPI tft = TFT_eSPI(); // Create TFT instance
-static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf[LV_HOR_RES_MAX * 10];
+// 定义背光控制引脚（根据实际接线修改）
+#define BACKLIGHT_PIN 2
 
-
-void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
-    tft.startWrite();
-    tft.setAddrWindow(area->x1, area->y1, area->x2 - area->x1 + 1, area->y2 - area->y1 + 1);
-    tft.pushColors(&color_p->full, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1), true);
-    tft.endWrite();
-    lv_disp_flush_ready(disp);
+void setup() {
+  // 初始化串口
+  Serial.begin(115200);
+  
+  // 配置背光引脚并开启背光
+  pinMode(BACKLIGHT_PIN, OUTPUT);
+  digitalWrite(BACKLIGHT_PIN, HIGH);
+  
+  // 初始化屏幕
+  tft.init();
+  
+  // 设置屏幕旋转方向（0-3可选，根据实际显示调整）
+  tft.setRotation(0);
+  
+  // 清屏为黑色
+  tft.fillScreen(TFT_BLACK);
+  
+  // 设置文本颜色为白色
+  tft.setTextColor(TFT_WHITE);
+  
+  // 设置文本大小（1-7，数字越大文字越大）
+  tft.setTextSize(2);
+  
+  // 在指定位置打印文本（x=20, y=100）
+  tft.setCursor(20, 100);
+  tft.print("Hello World!");
+  
+  // 可以再打印一行不同颜色的文本
+  tft.setTextColor(TFT_GREEN);
+  tft.setTextSize(1);
+  tft.setCursor(40, 130);
+  tft.print("ESP32 + ST7789");
 }
-  void setup()  
-  {
 
-    led_init();
-    tft.init(); 
-    tft.fillScreen(TFT_WHITE);
-    tft.setRotation(1);
-    tft.setTextColor(TFT_RED);
-    tft.setTextSize(1);
-    tft.setCursor(0,0,2);
-    tft.println("Hello, LVGL!");
+void loop() {
+  // 不需要循环执行任何操作
+  delay(1000);
+}
 
     
-  }
-  
-  void loop()
-  {
-    
-    delay(5);
-
-  }
-  
-
-  
-  
-
-
