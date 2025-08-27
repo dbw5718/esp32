@@ -1,97 +1,66 @@
-#include <WiFi.h>
-#include <SPI.h>
-#include <TFT_eSPI.h>
-#include "basic.h"
-#include <HTTPClient.h>
-#include <ArduinoJson.h>
-#include "zh_front_20.h"
-#include <RTClib.h>
-#include <ESP32Time.h>
-#include "draw.h"
 #include <lvgl.h>
+#include <TFT_eSPI.h>   // 如果你用 ILI9341/ST7789，建议用 TFT_eSPI
+
+TFT_eSPI tft = TFT_eSPI();
+
+#define DISP_BUF_SIZE (240 * 40) 
+
+static lv_disp_draw_buf_t draw_buf;
+static lv_color_t buf[DISP_BUF_SIZE];
 
 
+// 刷新回调：把 LVGL 的绘制结果推到屏幕
+void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
+    tft.startWrite();
+    tft.setAddrWindow(area->x1, area->y1, area->x2 - area->x1 + 1, area->y2 - area->y1 + 1);
+    tft.pushColors((uint16_t *)&color_p->full, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1), true);
+    tft.endWrite();
+    lv_disp_flush_ready(disp);
+}
 
-//定义两个字符串指针常量
-const char* name="301";            //wifi名称
-const char* passwd="Chrome1314...@";       //wifi密码
+void setup() {
+    Serial.begin(115200);
+    Serial.println("LVGL minimal demo");
 
-
-  void setup()  
-  {
-
-    led_init();
-    tft.init(); 
-    tft.fillScreen(TFT_WHITE);
+    // 初始化 TFT
+    tft.begin();
     tft.setRotation(1);
-    tft.setTextColor(TFT_RED);
-    tft.setTextSize(1);
-    tft.setCursor(0,0,2);
 
-    Serial.begin(9600);
+    // 初始化 LVGL
+    lv_init();
 
-    WiFi.begin(name,passwd); 
+    lv_disp_draw_buf_init(&draw_buf, buf, NULL, DISP_BUF_SIZE);
 
-    tft.print("wifi connecting");
-    while(WiFi.status()!=WL_CONNECTED)      //未连接时阻塞程序，直到连接成功
-    {           
-      delay(500);
-      if(tft.getCursorX()>=145&&tft.getCursorY()>=16)
-      {
-        tft.fillScreen(TFT_WHITE);//清空屏幕
-        tft.setCursor(0,0,2);
-        tft.print("wifi connecting");
-      }
-      tft.print(".");
-      Serial.println(tft.getCursorY());
-      
-    }
+    static lv_disp_drv_t disp_drv;
+    lv_disp_drv_init(&disp_drv);
+    disp_drv.hor_res = 240;   // 改成你的屏幕分辨率
+    disp_drv.ver_res = 320;
+    disp_drv.flush_cb = my_disp_flush;
+    disp_drv.draw_buf = &draw_buf;
+    lv_disp_drv_register(&disp_drv);
 
-    tft.fillScreen(TFT_WHITE);                  //清空屏幕
-    tft.setCursor(0,0,2);
-    tft.println("wifi connected !");
-    tft.setCursor(5,20,2);
-    tft.print("ip :  "); 
-    tft.setTextColor(TFT_RED);
-    tft.print(WiFi.localIP()); 
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
+    // 创建一个简单标签
+    lv_obj_t *label = lv_label_create(lv_scr_act());
+    lv_label_set_text(label, "Hello LVGL!");
+    lv_obj_center(label);
 
-    tft.setCursor(5,5,2);
-    tft.print("Getting information...");
-    //attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
-    //attain_time("https://cn.apihz.cn/api/time/getapi.php?id=88888888&key=88888888&type=2");     //获取时间信息
-  
-
-    WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
-    rtc.setTime(second, minute, hour, day, month, year);  //将获取到的时间信息写入内部时钟
-    tft.fillScreen(TFT_WHITE);
-
-    // tft.drawLine(0,50,240,50,TFT_BLACK);
-    // tft.drawLine(50,0,50,50,TFT_BLACK);
-    // tft.drawLine(150,0,150,50,TFT_BLACK);
-    // tft.drawLine(0,100,240,100,TFT_BLACK);
-
-    //tft.setTextColor(TFT_DARKGREY);
-    
-    //time_show(hour, minute, second); //显示时间
-    // Serial.println(hour);
-    // Serial.println(minute);
-    // Serial.println(second);
-
-    //weather_show(city,weather_condition,winddirection,tem); //显示天气信息
-  }
-  
-  void loop()
-  {
-    //time_show(rtc.getTime("%H").toInt(),rtc.getTime("%M").toInt(),rtc.getTime("%S").toInt()); 
-    //astronaut_show();
-    //delay(100);
-
-  }
-  
-
-  
-  
+    // 创建一个简单的表盘
+    lv_obj_t * meter = lv_meter_create(lv_scr_act());
+    lv_obj_set_pos(meter, 100, 200);
+    // 设置表盘大小
+    lv_meter_scale_t * scale=lv_meter_add_scale(meter);
+    lv_meter_set_scale_ticks(meter, scale, 41, 2, 10, lv_palette_main(LV_PALETTE_GREY));
+    lv_meter_set_scale_major_ticks(meter, scale, 8, 4, 15, lv_color_black(), 10);
+    // 添加指针
+    lv_meter_indicator_t * indic = lv_meter_add_needle_line(meter, scale, 4, lv_palette_main(LV_PALETTE_RED), -10);
+    // 设置表盘范围和初始值
+    lv_meter_set_scale_range(meter, scale, 0, 100, 270, 90);
+    lv_meter_set_indicator_value(meter, indic, 50);
 
 
+}
+
+void loop() {
+    lv_timer_handler();  // 让 LVGL 刷新
+    delay(5);
+}
