@@ -218,18 +218,18 @@
 //#define TFT_RST  -1  // Set TFT_RST to -1 if display RESET is connected to ESP32 board RST
 
 // SPI硬件引脚（自定义映射）
-#define TFT_MISO 19    // MISO（数据输入，可选，不读取屏幕时可悬空）
-#define TFT_MOSI 2     // MOSI（数据输出，对应显示屏SDA引脚，接D2）
-#define TFT_SCLK 15    // SCK（时钟线，对应显示屏SCL引脚，接D15）
+// #define TFT_MISO 19    // MISO（数据输入，可选，不读取屏幕时可悬空）
+// #define TFT_MOSI 2     // MOSI（数据输出，对应显示屏SDA引脚，接D2）
+// #define TFT_SCLK 15    // SCK（时钟线，对应显示屏SCL引脚，接D15）
 
-// 控制引脚（必须与实际接线一致）
-#define TFT_CS   5     // CS（片选，低电平有效，若显示屏无CS需接地）
-#define TFT_DC   5     // DC（数据/命令切换，对应显示屏DC引脚，接D5）
-#define TFT_RST  4     // RST（复位，对应显示屏RES引脚，接D4）
-// #define TFT_RST  -1   // 若RES接ESP32复位引脚，取消此行注释
+// // 控制引脚（必须与实际接线一致）
+// #define TFT_CS   5     // CS（片选，低电平有效，若显示屏无CS需接地）
+// #define TFT_DC   5     // DC（数据/命令切换，对应显示屏DC引脚，接D5）
+// #define TFT_RST  4     // RST（复位，对应显示屏RES引脚，接D4）
+// // #define TFT_RST  -1   // 若RES接ESP32复位引脚，取消此行注释
 
-#define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
-#define TFT_BACKLIGHT_ON HIGH  // 高电平点亮背光（根据硬件调整）
+// #define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
+// #define TFT_BACKLIGHT_ON HIGH  // 高电平点亮背光（根据硬件调整）
 
 // For ESP32 Dev board (only tested with GC9A01 display)
 // The hardware SPI can be mapped to any pins
