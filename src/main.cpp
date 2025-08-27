@@ -43,6 +43,21 @@ void setup() {
     lv_obj_t *label = lv_label_create(lv_scr_act());
     lv_label_set_text(label, "Hello LVGL!");
     lv_obj_center(label);
+
+    // 创建一个简单的表盘
+    lv_obj_t * meter = lv_meter_create(lv_scr_act());
+    lv_obj_set_pos(meter, 100, 200);
+    // 设置表盘大小
+    lv_meter_scale_t * scale=lv_meter_add_scale(meter);
+    lv_meter_set_scale_ticks(meter, scale, 41, 2, 10, lv_palette_main(LV_PALETTE_GREY));
+    lv_meter_set_scale_major_ticks(meter, scale, 8, 4, 15, lv_color_black(), 10);
+    // 添加指针
+    lv_meter_indicator_t * indic = lv_meter_add_needle_line(meter, scale, 4, lv_palette_main(LV_PALETTE_RED), -10);
+    // 设置表盘范围和初始值
+    lv_meter_set_scale_range(meter, scale, 0, 100, 270, 90);
+    lv_meter_set_indicator_value(meter, indic, 50);
+
+
 }
 
 void loop() {
