@@ -77,8 +77,13 @@ void attain_weather(String url)
           {
             // 获取响应的内容
             String response = http.getString();
-            DynamicJsonDocument doc(1024);
+            StaticJsonDocument<2048> doc;
             DeserializationError error = deserializeJson(doc, response);
+            if (error) {
+            Serial.print("JSON解析失败: ");
+            Serial.println(error.c_str());
+            return; // 解析失败则退出函数
+            }
 
             city = doc["lives"][0]["city"].as<String>();
             weather_condition = doc["lives"][0]["weather"].as<String>();
@@ -113,8 +118,15 @@ HTTPClient http;
           {
             // 获取响应的内容
             String response = http.getString();
-            DynamicJsonDocument doc(1024);
+            // DynamicJsonDocument doc(1024);
+            // DeserializationError error = deserializeJson(doc, response);
+            StaticJsonDocument<2048> doc;
             DeserializationError error = deserializeJson(doc, response);
+            if (error) {
+            Serial.print("JSON解析失败: ");
+            Serial.println(error.c_str());
+            return; // 解析失败则退出函数
+            }
 
             date_information = doc["msg"].as<String>();
             
