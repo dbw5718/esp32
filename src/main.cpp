@@ -65,15 +65,19 @@
 //     delay(5);
 // }
 #include <TFT_eSPI.h>
+#include "font_yahei24.h">
 
 TFT_eSPI tft = TFT_eSPI();
 
 void setup() {
   Serial.begin(115200);
   tft.begin();         // 初始化屏幕
-  tft.fillScreen(TFT_RED);  // 全屏填充红色
-  delay(1000);
-  tft.fillScreen(TFT_GREEN); // 1秒后填充绿色
-}
+  tft.loadFont(font_yahei24); // 加载中文字体
+  tft.drawString("你好，世界！", 0, 0);
+  tft.drawString("Hello World", 0, 30);
+  tft.drawString("0123456789", 0, 60);
+  tft.unloadFont();
+
+
 
 void loop() {}

@@ -236,20 +236,19 @@
 // #define TFT_RST  4     // RST（复位，对应显示屏RES引脚，接D4）
 // // #define TFT_RST  -1   // 若RES接ESP32复位引脚，取消此行注释
 
-#define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
-#define TFT_BACKLIGHT_ON LOW  // 高电平点亮背光（根据硬件调整）
 // #define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
-// #define TFT_BACKLIGHT_ON HIGH  // 高电平点亮背光（根据硬件调整）
+// #define TFT_BACKLIGHT_ON LOW  // 高电平点亮背光（根据硬件调整）
+#define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
+#define TFT_BACKLIGHT_ON HIGH  // 高电平点亮背光（根据硬件调整）
 
 // For ESP32 Dev board (only tested with GC9A01 display)
 // The hardware SPI can be mapped to any pins
 
 #define TFT_MOSI 2 // In some display driver board, it might be written as "SDA" and so on.
 #define TFT_SCLK 15
-//#define TFT_CS   2  // Chip select control pin
+#define TFT_CS   5  // Chip select control pin
 #define TFT_DC   16  // Data Command control pin
 #define TFT_RST  4  // Reset pin (could connect to Arduino RESET pin)
-//#define TFT_BL   18  // LED back-light
 
 //#define TOUCH_CS 0    // Chip select pin (T_CS) of touch screen
 
