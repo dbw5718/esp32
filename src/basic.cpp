@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include <RTClib.h>
 #include <ESP32Time.h>
-#include "zh_front_20.h"
+//#include "zh_front_20.h"
 
 
 
@@ -77,8 +77,8 @@ void attain_weather(String url)
           {
             // 获取响应的内容
             String response = http.getString();
-            StaticJsonDocument<2048> doc;
-            DeserializationError error = deserializeJson(doc, response);
+            JsonDocument doc;
+            DeserializationError error=deserializeJson(doc, response);
             if (error) {
             Serial.print("JSON解析失败: ");
             Serial.println(error.c_str());
@@ -120,7 +120,7 @@ HTTPClient http;
             String response = http.getString();
             // DynamicJsonDocument doc(1024);
             // DeserializationError error = deserializeJson(doc, response);
-            StaticJsonDocument<2048> doc;
+            JsonDocument doc;
             DeserializationError error = deserializeJson(doc, response);
             if (error) {
             Serial.print("JSON解析失败: ");

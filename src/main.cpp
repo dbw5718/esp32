@@ -78,6 +78,8 @@ void setup() {
   tft.drawString("0123456789", 0, 60);
   tft.unloadFont();
 
+}
 
+void loop() {
 
-void loop() {}
+}
