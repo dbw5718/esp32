@@ -249,7 +249,7 @@
 //#define TFT_CS   2  // Chip select control pin
 #define TFT_DC   16  // Data Command control pin
 #define TFT_RST  4  // Reset pin (could connect to Arduino RESET pin)
-#define TFT_BL   18  // LED back-light
+//#define TFT_BL   18  // LED back-light
 
 //#define TOUCH_CS 0    // Chip select pin (T_CS) of touch screen
 
@@ -384,8 +384,8 @@
 // #define SPI_FREQUENCY   5000000
 // #define SPI_FREQUENCY  10000000
 // #define SPI_FREQUENCY  20000000
-//#define SPI_FREQUENCY  27000000
-#define SPI_FREQUENCY  20000000
+#define SPI_FREQUENCY  27000000
+//#define SPI_FREQUENCY  40000000
 // #define SPI_FREQUENCY  55000000 // STM32 SPI1 only (SPI2 maximum is 27MHz)
 // #define SPI_FREQUENCY  80000000
 
