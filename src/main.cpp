@@ -7,9 +7,19 @@
 #define TFT_VER_RES   240
 #define TFT_ROTATION  LV_DISPLAY_ROTATION_0
 
+// 2. 引脚定义（必须与User_Setup.h完全一致！）
+#define TFT_BL_PIN    21  // 背光引脚（对应User_Setup的TFT_BL）
+#define TFT_DC_PIN    18  // 数据/命令引脚（对应User_Setup的TFT_DC）
+#define TFT_CS_PIN    5   // 片选引脚（对应User_Setup的TFT_CS）
+#define TFT_RST_PIN   4   // 复位引脚（对应User_Setup的TFT_RST）
+
 /*LVGL draw into this buffer, 1/10 screen size usually works well. The size is in bytes*/
 #define DRAW_BUF_SIZE (TFT_HOR_RES * TFT_VER_RES / 10 * (LV_COLOR_DEPTH / 8))
-uint32_t draw_buf[DRAW_BUF_SIZE / 4];
+
+// 3. LVGL显示缓冲区（240x240屏幕，10行双缓冲，RGB565格式）
+#define BUF_LINE_COUNT 10
+static lv_color_t draw_buf[BUF_LINE_COUNT * TFT_HOR_RES];  // 仅保留这一行
+TFT_eSPI tft = TFT_eSPI();  // 创建TFT对象
 
 #if LV_USE_LOG != 0
 void my_print( lv_log_level_t level, const char * buf )
@@ -23,6 +33,12 @@ void my_print( lv_log_level_t level, const char * buf )
 /* LVGL calls it when a rendered image needs to copied to the display*/
 void my_disp_flush( lv_display_t *disp, const lv_area_t *area, uint8_t * px_map)
 {
+    tft.startWrite();  // 开始SPI通信
+    // 设置屏幕显示区域（area是LVGL渲染的区域）
+    tft.setAddrWindow(area->x1, area->y1, area->x2 - area->x1 + 1, area->y2 - area->y1 + 1);
+    // 发送像素数据（px_map是LVGL的渲染缓存，转16位RGB565格式）
+    tft.pushColors((uint16_t*)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1), true);
+    tft.endWrite();    // 结束SPI通信
     lv_display_flush_ready(disp);
 }
 
@@ -39,6 +55,15 @@ void setup()
 
     Serial.begin( 115200 );
     Serial.println( LVGL_Arduino );
+
+    // 1. 初始化TFT屏幕
+    tft.begin();                  // 初始化ST7789
+    tft.setRotation(TFT_ROTATION); // 设置屏幕旋转
+    tft.fillScreen(TFT_BLACK);    // 清屏（避免残留画面）
+
+    // 2. 初始化背光（关键！确保与User_Setup的TFT_BACKLIGHT_ON一致）
+    pinMode(TFT_BL_PIN, OUTPUT);
+    digitalWrite(TFT_BL_PIN, TFT_BACKLIGHT_ON);  // 打开背光（HIGH/LOW与User_Setup匹配）
 
     lv_init();
 

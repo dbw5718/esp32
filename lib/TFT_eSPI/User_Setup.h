@@ -74,7 +74,7 @@
 // Try ONE option at a time to find the correct colour order for your display
 
 //#define TFT_RGB_ORDER TFT_RGB  // Colour order Red-Green-Blue
-//#define TFT_RGB_ORDER TFT_BGR  // Colour order Blue-Green-Red
+#define TFT_RGB_ORDER TFT_BGR  // Colour order Blue-Green-Red
 
 // For M5Stack ESP32 module with integrated ILI9341 display ONLY, remove // in line below
 
@@ -238,7 +238,7 @@
 
 // #define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
 // #define TFT_BACKLIGHT_ON LOW  // 高电平点亮背光（根据硬件调整）
-#define TFT_BL   18    // 背光控制引脚（BLK = Backlight）
+#define TFT_BL   21    // 背光控制引脚（BLK = Backlight）
 #define TFT_BACKLIGHT_ON HIGH  // 高电平点亮背光（根据硬件调整）
 
 // For ESP32 Dev board (only tested with GC9A01 display)
