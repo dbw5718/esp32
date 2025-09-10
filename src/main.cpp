@@ -87,11 +87,6 @@ void setup()
     lv_display_set_flush_cb(disp, my_disp_flush);           // 绑定刷新回调
     lv_display_set_rotation(disp, TFT_ROTATION_LVGL);       // 修复旋转类型错误
 
-    // /*Initialize the (dummy) input device driver（保持注释，不用改）*/
-    // lv_indev_t * indev = lv_indev_create();
-    // //lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER); 
-    // //lv_indev_set_read_cb(indev, my_touchpad_read);
-
     // /* Create a simple label（保持你原有的，仅改字体为默认14号）*/
     Serial.println("创建Label...");
     lv_obj_t *label = lv_label_create( lv_screen_active() );
