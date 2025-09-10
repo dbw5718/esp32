@@ -95,7 +95,7 @@ void setup()
     lv_obj_set_style_text_font(label, &lv_font_montserrat_14, 0);
     // 调试4：设置红色文本，对比黑色背景更易见
     lv_obj_set_style_text_color(label, lv_color_hex(0xFF0000), 0);
-    lv_obj_align( label, LV_ALIGN_CENT ER, 0, 0 );
+    lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
 
     Serial.println( "Setup done" );
 }
