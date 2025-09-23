@@ -41,50 +41,84 @@ static uint32_t my_tick(void)
 
 /* 创建刻度组件（严格基于lv_scale.c源码API）*/
 void create_scale() {
-    Serial.println("创建Scale组件...");
-    
-    // 1. 创建刻度对象（源码中`lv_scale_create`存在）
-    lv_obj_t *scale = lv_scale_create(lv_screen_active());
-    if(!scale) {
-        Serial.println("创建Scale失败!");
-        return;
-    }
+    Serial.println("创建环形刻度（兼容模式）...");
+    lv_obj_t * scale = lv_scale_create(lv_screen_active());
+    lv_obj_set_size(scale, 150, 150);
+    lv_scale_set_label_show(scale, true);
+    lv_scale_set_mode(scale, LV_SCALE_MODE_ROUND_OUTER);
+    lv_obj_center(scale);
 
-    // 2. 核心刻度配置（全部使用源码存在的函数）
-    lv_scale_set_mode(scale, LV_SCALE_MODE_HORIZONTAL_BOTTOM);  // 水平模式（刻度在下方）
-    lv_scale_set_range(scale, 0, 100);                          // 数值范围：0-100
-    lv_scale_set_total_tick_count(scale, 21);                   // 总刻度数：21个（0-100每5一个刻度）
-    lv_scale_set_major_tick_every(scale, 5);                    // 主刻度间隔：每5个刻度1个主刻度（显示标签）
-    lv_scale_set_label_show(scale, true);                       // 显示主刻度数值标签
+    lv_scale_set_total_tick_count(scale, 21);
+    lv_scale_set_major_tick_every(scale, 5);
 
-    // 3. 刻度样式配置（对应源码中`scale_draw_indicator`的样式获取逻辑）
-    // 3.1 主刻度样式（LV_PART_INDICATOR：源码中主刻度的PART）
-    lv_obj_set_style_length(scale, 12, LV_PART_INDICATOR);      // 主刻度长度：12px
-    lv_obj_set_style_line_width(scale, 3, LV_PART_INDICATOR);   // 主刻度线宽：3px
-    lv_obj_set_style_line_color(scale, lv_color_hex(0xFF0000), LV_PART_INDICATOR);  // 主刻度颜色：红色
-    // 3.2 次刻度样式（LV_PART_ITEMS：源码中次刻度的PART）
-    lv_obj_set_style_length(scale, 6, LV_PART_ITEMS);           // 次刻度长度：6px
-    lv_obj_set_style_line_width(scale, 1, LV_PART_ITEMS);       // 次刻度线宽：1px
-    lv_obj_set_style_line_color(scale, lv_color_hex(0xFFFFFF), LV_PART_ITEMS);  // 次刻度颜色：白色
-    // 3.3 刻度条背景样式（LV_PART_MAIN：源码中主体PART）
-    lv_obj_set_style_bg_color(scale, lv_color_hex(0x333333), LV_PART_MAIN);      // 背景色：深灰
-    lv_obj_set_style_border_color(scale, lv_color_hex(0xFFFFFF), LV_PART_MAIN);  // 边框色：白色
-    lv_obj_set_style_border_width(scale, 2, LV_PART_MAIN);      // 边框宽：2px
-    lv_obj_set_style_radius(scale, 4, LV_PART_MAIN);            // 圆角：4px
+    lv_obj_set_style_length(scale, 5, LV_PART_ITEMS);
+    lv_obj_set_style_length(scale, 10, LV_PART_INDICATOR);
+    lv_scale_set_range(scale, 0, 100);
 
-    // 4. 创建设置线指针（源码唯一支持的指示器：`lv_scale_set_line_needle_value`）
-    lv_obj_t *needle = lv_line_create(scale);                  // 创建线对象作为指针
-    lv_obj_set_style_line_width(needle, 3, LV_PART_MAIN);      // 指针线宽：3px
-    lv_obj_set_style_line_color(needle, lv_color_hex(0x00FF00), LV_PART_MAIN);  // 指针颜色：绿色
-    // 关联指针到刻度值（设置指针指向75的位置）
-    lv_scale_set_line_needle_value(scale, needle, 20, 75);     // 20=指针长度，75=目标数值
+    static const char * custom_labels[] = {"0 °C", "25 °C", "50 °C", "75 °C", "100 °C", NULL};
+    lv_scale_set_text_src(scale, custom_labels);
 
-    // 5. 刻度组件位置和大小（适配240x240屏幕）
-    lv_obj_set_size(scale, 200, 40);  // 刻度条大小：宽200px，高40px
-    lv_obj_align(scale, LV_ALIGN_CENTER, 0, 0);  // 屏幕居中显示
+    static lv_style_t indicator_style;
+    lv_style_init(&indicator_style);
 
-    Serial.println("Scale组件创建完成");
+    /* Label style properties */
+    lv_style_set_text_font(&indicator_style, LV_FONT_DEFAULT);
+    lv_style_set_text_color(&indicator_style, lv_palette_darken(LV_PALETTE_BLUE, 3));
+
+    /* Major tick properties */
+    lv_style_set_line_color(&indicator_style, lv_palette_darken(LV_PALETTE_BLUE, 3));
+    lv_style_set_width(&indicator_style, 10U);      /*Tick length*/
+    lv_style_set_line_width(&indicator_style, 2U);  /*Tick width*/
+    lv_obj_add_style(scale, &indicator_style, LV_PART_INDICATOR);
+
+    static lv_style_t minor_ticks_style;
+    lv_style_init(&minor_ticks_style);
+    lv_style_set_line_color(&minor_ticks_style, lv_palette_lighten(LV_PALETTE_BLUE, 2));
+    lv_style_set_width(&minor_ticks_style, 5U);         /*Tick length*/
+    lv_style_set_line_width(&minor_ticks_style, 2U);    /*Tick width*/
+    lv_obj_add_style(scale, &minor_ticks_style, LV_PART_ITEMS);
+
+    static lv_style_t main_line_style;
+    lv_style_init(&main_line_style);
+    /* Main line properties */
+    lv_style_set_arc_color(&main_line_style, lv_palette_darken(LV_PALETTE_BLUE, 3));
+    lv_style_set_arc_width(&main_line_style, 2U); /*Tick width*/
+    lv_obj_add_style(scale, &main_line_style, LV_PART_MAIN);
+
+    /* Add a section */
+    static lv_style_t section_minor_tick_style;
+    static lv_style_t section_label_style;
+    static lv_style_t section_main_line_style;
+
+    lv_style_init(&section_label_style);
+    lv_style_init(&section_minor_tick_style);
+    lv_style_init(&section_main_line_style);
+
+    /* Label style properties */
+    lv_style_set_text_font(&section_label_style, LV_FONT_DEFAULT);
+    lv_style_set_text_color(&section_label_style, lv_palette_darken(LV_PALETTE_RED, 3));
+
+    lv_style_set_line_color(&section_label_style, lv_palette_darken(LV_PALETTE_RED, 3));
+    lv_style_set_line_width(&section_label_style, 5U); /*Tick width*/
+
+    lv_style_set_line_color(&section_minor_tick_style, lv_palette_lighten(LV_PALETTE_RED, 2));
+    lv_style_set_line_width(&section_minor_tick_style, 4U); /*Tick width*/
+
+    /* Main line properties */
+    lv_style_set_arc_color(&section_main_line_style, lv_palette_darken(LV_PALETTE_RED, 3));
+    lv_style_set_arc_width(&section_main_line_style, 4U); /*Tick width*/
+
+    /* Configure section styles */
+    lv_scale_section_t * section = lv_scale_add_section(scale);
+    lv_scale_set_section_range(scale, section, 75, 100);
+    lv_scale_set_section_style_indicator(scale, section, &section_label_style);
+    lv_scale_set_section_style_items(scale, section, &section_minor_tick_style);
+    lv_scale_set_section_style_main(scale, section, &section_main_line_style);
+
+
+    Serial.println("环形刻度创建完成");
 }
+
 
 void setup()
 {
@@ -127,7 +161,7 @@ void setup()
 
     // 创建刻度组件
     create_scale();
-
+    
     Serial.println("Setup done");
 }
 
