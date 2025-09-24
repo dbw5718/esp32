@@ -8,7 +8,6 @@
 #include <ESP32Time.h>
 
 
-
 //编写函数
   void led_init(void)
   {
@@ -97,7 +96,7 @@ void attain_weather(String url)
 String date_information;
 String date;
 int hour=0,minute=0,second=0;
-int year=2023,month=5,day=2;
+int year=0,month=0,day=0;
 int code=0;
 
 void attain_time(String url)
