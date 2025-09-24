@@ -60,7 +60,7 @@ const char* passwd="Chrome1314...@";       //wifi密码
     tft.setCursor(5,5,2);
     tft.print("Getting information...");
     //attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd");  //获取天气信息
-    //attain_time("https://cn.apihz.cn/api/time/getapi.php?id=88888888&key=88888888&type=2");     //获取时间信息
+    //attain_time("https://api.uuni.cn//api/time");     //获取时间信息
   
 
     WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
