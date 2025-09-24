@@ -1,5 +1,6 @@
 #include "draw_scale.h"
 #include <Arduino.h>
+#include "zh_font_20.h"
 
 // void create_scale() {
 //     Serial.println("创建环形刻度（兼容模式）...");
@@ -89,7 +90,7 @@ lv_obj_t * date_label;
 lv_obj_t * temp_label;
 lv_obj_t * humi_label;
 
-// 天气类型枚举（用于switch判断）
+// 天气类型枚举（保持不变）
 typedef enum {
     WEATHER_SUNNY = 0,         // 晴天
     WEATHER_PARTLY_CLOUDY,     // 晴间多云
@@ -106,97 +107,110 @@ typedef enum {
     WEATHER_UNKNOWN            // 未知天气
 } weather_type_t;
 
-// 创建UI布局（保持不变）
+// 创建UI布局（修复布局问题）
 void create_weather_ui(void) {
     lv_obj_t * screen = lv_screen_active();
     lv_obj_clean(screen);
+    // 给屏幕设置垂直Flex布局，让三个容器（上/中/下）垂直排列
+    lv_obj_set_layout(screen, LV_LAYOUT_FLEX);
+    lv_obj_set_flex_flow(screen, LV_FLEX_FLOW_COLUMN);  // 垂直方向排列
+    lv_obj_set_flex_align(screen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY);  // 均匀分布
+    lv_obj_set_size(screen, 240, 240);  // 强制屏幕尺寸为240x240（避免自适应错误）
 
-    // 顶部区域：城市 + 天气图标 + 描述
+    /*************************
+     1. 顶部区域：城市 + 天气图标 + 描述（水平排列）
+     *************************/
     lv_obj_t * top_cont = lv_obj_create(screen);
-    lv_obj_set_size(top_cont, 240, 60);
-    lv_obj_set_align(top_cont, LV_ALIGN_TOP_MID);
+    lv_obj_set_size(top_cont, 240, 60);  // 固定高度60px
     lv_obj_remove_style_all(top_cont);
+    // 顶部容器启用水平Flex布局，子组件从左到右排列
+    lv_obj_set_layout(top_cont, LV_LAYOUT_FLEX);
+    lv_obj_set_flex_flow(top_cont, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(top_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_AROUND);  // 均匀分布
 
+    // 城市标签（左）
     city_label = lv_label_create(top_cont);
     lv_label_set_text(city_label, "北京市");
-    lv_obj_set_style_text_font(city_label, &lv_font_montserrat_16, 0);
-    lv_obj_set_align(city_label, LV_ALIGN_LEFT_MID);
-    lv_obj_set_x(city_label, 10);
+    lv_obj_set_style_text_font(city_label, &zh_font_20, 0);
 
+    // 天气图标（中）
     weather_icon = lv_label_create(top_cont);
     lv_label_set_text(weather_icon, "☀️");
-    lv_obj_set_style_text_font(weather_icon, &lv_font_montserrat_24, 0);
-    lv_obj_set_align(weather_icon, LV_ALIGN_RIGHT_MID);
-    lv_obj_set_x(weather_icon, -60);
+    lv_obj_set_style_text_font(weather_icon, &zh_font_20, 0);
 
+    // 天气描述（右）
     weather_label = lv_label_create(top_cont);
     lv_label_set_text(weather_label, "晴");
-    lv_obj_set_style_text_font(weather_label, &lv_font_montserrat_14, 0);
-    lv_obj_align_to(weather_label, weather_icon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+    lv_obj_set_style_text_font(weather_label, &zh_font_20, 0);
 
-    // 中间区域：时间 + 日期
+    /*************************
+     2. 中间区域：时间 + 日期（垂直排列）
+     *************************/
     lv_obj_t * mid_cont = lv_obj_create(screen);
-    lv_obj_set_size(mid_cont, 240, 120);
-    lv_obj_set_align(mid_cont, LV_ALIGN_CENTER);
+    lv_obj_set_size(mid_cont, 240, 120);  // 固定高度120px
     lv_obj_remove_style_all(mid_cont);
+    // 中间容器启用垂直Flex布局，子组件从上到下排列
+    lv_obj_set_layout(mid_cont, LV_LAYOUT_FLEX);
+    lv_obj_set_flex_flow(mid_cont, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(mid_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);  // 居中对齐
 
+    // 时间标签（上）
     time_label = lv_label_create(mid_cont);
     lv_label_set_text(time_label, "09:45");
     lv_obj_set_style_text_font(time_label, &lv_font_montserrat_48, 0);
-    lv_obj_set_align(time_label, LV_ALIGN_TOP_MID);
 
+    // 日期标签（下，跟在时间下方）
     date_label = lv_label_create(mid_cont);
     lv_label_set_text(date_label, "2024年9月24日 周三");
-    lv_obj_set_style_text_font(date_label, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(date_label, &zh_font_20, 0);
     lv_obj_set_style_text_color(date_label, lv_color_hex(0x666666), 0);
-    lv_obj_align_to(date_label, time_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+    lv_obj_set_style_margin_top(date_label, 10, 0);  // 与时间保持10px间距
 
-    // 底部区域：温度 + 湿度
+    /*************************
+     3. 底部区域：温度 + 湿度（水平排列）
+     *************************/
     lv_obj_t * bottom_cont = lv_obj_create(screen);
-    lv_obj_set_size(bottom_cont, 240, 60);
-    lv_obj_set_align(bottom_cont, LV_ALIGN_BOTTOM_MID);
+    lv_obj_set_size(bottom_cont, 240, 60);  // 固定高度60px
     lv_obj_remove_style_all(bottom_cont);
+    // 底部容器启用水平Flex布局，子组件从左到右排列
+    lv_obj_set_layout(bottom_cont, LV_LAYOUT_FLEX);
+    lv_obj_set_flex_flow(bottom_cont, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(bottom_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_AROUND);  // 均匀分布
 
-    // 温度模块
+    // 温度模块（左：图标+文本）
     lv_obj_t * temp_cont = lv_obj_create(bottom_cont);
-    lv_obj_set_size(temp_cont, 120, 60);
-    lv_obj_set_align(temp_cont, LV_ALIGN_LEFT_MID);
     lv_obj_remove_style_all(temp_cont);
+    lv_obj_set_layout(temp_cont, LV_LAYOUT_FLEX);  // 子组件水平排列
+    lv_obj_set_flex_flow(temp_cont, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(temp_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
     lv_obj_t * temp_icon = lv_label_create(temp_cont);
     lv_label_set_text(temp_icon, "🌡️");
-    lv_obj_set_style_text_font(temp_icon, &lv_font_montserrat_20, 0);
-    lv_obj_set_align(temp_icon, LV_ALIGN_LEFT_MID);
-    lv_obj_set_x(temp_icon, 15);
+    lv_obj_set_style_text_font(temp_icon, &zh_font_20, 0);
+    lv_obj_set_style_margin_right(temp_icon, 8, 0);  // 图标与文本间距8px
 
     temp_label = lv_label_create(temp_cont);
     lv_label_set_text(temp_label, "25℃");
-    lv_obj_set_style_text_font(temp_label, &lv_font_montserrat_24, 0);
-    lv_obj_align_to(temp_label, temp_icon, LV_ALIGN_OUT_RIGHT_MID, 8, 0);
+    lv_obj_set_style_text_font(temp_label, &zh_font_20, 0);
 
-    // 湿度模块
+    // 湿度模块（右：图标+文本）
     lv_obj_t * humi_cont = lv_obj_create(bottom_cont);
-    lv_obj_set_size(humi_cont, 120, 60);
-    lv_obj_set_align(humi_cont, LV_ALIGN_RIGHT_MID);
     lv_obj_remove_style_all(humi_cont);
+    lv_obj_set_layout(humi_cont, LV_LAYOUT_FLEX);  // 子组件水平排列
+    lv_obj_set_flex_flow(humi_cont, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(humi_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
     lv_obj_t * humi_icon = lv_label_create(humi_cont);
     lv_label_set_text(humi_icon, "💧");
-    lv_obj_set_style_text_font(humi_icon, &lv_font_montserrat_20, 0);
-    lv_obj_set_align(humi_icon, LV_ALIGN_LEFT_MID);
-    lv_obj_set_x(humi_icon, 15);
+    lv_obj_set_style_text_font(humi_icon, &zh_font_20, 0);
+    lv_obj_set_style_margin_right(humi_icon, 8, 0);  // 图标与文本间距8px
 
     humi_label = lv_label_create(humi_cont);
     lv_label_set_text(humi_label, "45%RH");
-    lv_obj_set_style_text_font(humi_label, &lv_font_montserrat_24, 0);
-    lv_obj_align_to(humi_label, humi_icon, LV_ALIGN_OUT_RIGHT_MID, 8, 0);
+    lv_obj_set_style_text_font(humi_label, &zh_font_20, 0);
 }
 
-/**
- * 将天气文字转换为枚举类型（用于switch判断）
- * @param weather 天气描述字符串
- * @return 对应的天气枚举值
- */
+// get_weather_type 函数（保持不变）
 static weather_type_t get_weather_type(const char * weather) {
     if (strstr(weather, "晴") && !strstr(weather, "云") && !strstr(weather, "夜")) {
         return WEATHER_SUNNY;
@@ -239,13 +253,10 @@ static weather_type_t get_weather_type(const char * weather) {
     }
 }
 
-/**
- * 使用switch语句更新天气图标
- */
+// update_weather_data 函数（保持不变）
 void update_weather_data(const char * city, const char * weather, 
                          const char * time, const char * date,
                          const char * temp, const char * humi) {
-    // 更新基础文本信息
     lv_label_set_text(city_label, city);
     lv_label_set_text(weather_label, weather);
     lv_label_set_text(time_label, time);
@@ -253,10 +264,7 @@ void update_weather_data(const char * city, const char * weather,
     lv_label_set_text(temp_label, temp);
     lv_label_set_text(humi_label, humi);
 
-    // 获取天气类型枚举值
     weather_type_t type = get_weather_type(weather);
-
-    // 使用switch语句更新图标（核心优化点）
     switch (type) {
         case WEATHER_SUNNY:
             lv_label_set_text(weather_icon, "☀️");
@@ -296,7 +304,7 @@ void update_weather_data(const char * city, const char * weather,
             break;
         case WEATHER_UNKNOWN:
         default:
-            lv_label_set_text(weather_icon, "?");  // 未知天气显示问号
+            lv_label_set_text(weather_icon, "?");
             break;
     }
 }
