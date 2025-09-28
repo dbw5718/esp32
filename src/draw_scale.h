@@ -11,6 +11,7 @@ extern lv_obj_t * time_label;
 extern lv_obj_t * date_label;
 extern lv_obj_t * temp_label;
 extern lv_obj_t * humi_label;
+extern lv_obj_t * ui_weather_icon_label;
 
 // 天气类型枚举
 typedef enum {
