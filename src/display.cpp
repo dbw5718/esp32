@@ -19,7 +19,6 @@ void display_init() {
     // 初始化背光
     pinMode(TFT_BL_PIN, OUTPUT);
     digitalWrite(TFT_BL_PIN, HIGH);  // 打开背光
-    
     // 初始化LVGL
     lv_init();
     
