@@ -35,7 +35,6 @@ void create_weather_ui(void);
 void update_weather_data(const char * city, const char * weather, 
                          const char * time, const char * date,
                          const char * temp, const char * humi);
-
-void create_test(void);
+                         
 
 #endif // DRAW_SCALE_H

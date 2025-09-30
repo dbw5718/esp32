@@ -33,7 +33,7 @@ void create_weather_ui(void)
     }, 3000, NULL); // 3000ms=3秒后执行
 
 
-    
+
     //     lv_obj_t * label1 = lv_label_create(lv_screen_active());
     //     lv_label_set_long_mode(label1, LV_LABEL_LONG_MODE_WRAP);     /*Break the long lines*/
     //     lv_label_set_recolor(label1, true);                      /*Enable re-coloring by commands in the text*/
@@ -74,6 +74,3 @@ void create_weather_ui(void)
     // lv_obj_align(label_temp_hum, LV_ALIGN_CENTER, 0, 80); // 位置在下
 }
 
-void create_test(void)
-{
-}
