@@ -1,4 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
-    "cmake.sourceDirectory": "D:/Users/tachyon/vscode/esp32/lib/Adafruit BusIO"
+    "cmake.sourceDirectory": "D:/Users/tachyon/vscode/esp32/lib/Adafruit BusIO",
+    "files.associations": {
+        "lvgl.h": "c"
+    }
 }

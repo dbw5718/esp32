@@ -3,18 +3,37 @@
 #include "my_chinese_font_16.h"
 #include "weather_icons.h"
 
-lv_obj_t * ui_weather_icon_label;
+// 全局变量（可选，方便后续切换图标）
+lv_obj_t *ui_weather_img; // 图片控件，用于显示天气图标
+
 
 /**
  * 创建UI布局（极简分区，强制居中）
  */
 void create_weather_ui(void)
 {
-    ui_weather_icon_label = lv_label_create(lv_screen_active());
-    lv_obj_set_style_text_font(ui_weather_icon_label, &weather_icon_font, 0); // 设置图标字体
-    lv_label_set_text(ui_weather_icon_label, LV_SYMBOL_WEATHER_SUNNY);       /*Break the long lines*/
-    lv_obj_align(ui_weather_icon_label, LV_ALIGN_CENTER, -80, -100);
+    // 2. 获取当前屏幕（LVGL显示控件需要挂载到屏幕上）
+    lv_obj_t *scr = lv_scr_act();
 
+    // 3. 创建「图片控件」（代替原来的标签控件，因为要显示图片而非文字）
+    ui_weather_img = lv_img_create(scr);
+
+    // 4. 设置图片来源：加载你整合的图片图标（这里以Sunny为例，可替换为Cloudy、Rainy等）
+    lv_img_set_src(ui_weather_img, &Sunny); // 关键：&图标名，对应weather_icons.h中的声明
+
+    // 5. 设置图标位置（示例：屏幕中心偏上50px，可根据需求调整）
+    lv_obj_align(ui_weather_img, LV_ALIGN_CENTER, 0, -50); // 最后两个参数是X/Y偏移量
+
+    // 6. （可选）设置图标大小（如果图标是64x64，不设置也会默认显示原尺寸，无需额外配置）
+    // lv_img_set_size(ui_weather_img, 64, 64); // 宽64，高64，与你的图标尺寸匹配
+
+    // （可选功能：3秒后自动切换为多云图标，验证多图标是否正常）
+    lv_timer_create([](lv_timer_t *timer) {
+        lv_img_set_src(ui_weather_img, &Cloudy); // 切换为Cloudy图标
+    }, 3000, NULL); // 3000ms=3秒后执行
+
+
+    
     //     lv_obj_t * label1 = lv_label_create(lv_screen_active());
     //     lv_label_set_long_mode(label1, LV_LABEL_LONG_MODE_WRAP);     /*Break the long lines*/
     //     lv_label_set_recolor(label1, true);                      /*Enable re-coloring by commands in the text*/
