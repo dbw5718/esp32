@@ -25,6 +25,7 @@ extern const lv_image_dsc_t Foggy;
 extern const lv_image_dsc_t Haze;
 extern const lv_image_dsc_t Duststorm;
 extern const lv_image_dsc_t Partly_Cloudy;
+extern const lv_image_dsc_t unknow;
 
 
 

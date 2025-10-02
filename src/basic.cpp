@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <RTClib.h>
 #include <ESP32Time.h>
+#include "draw_scale.h"
 
 
 //编写函数
