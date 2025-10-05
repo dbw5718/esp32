@@ -8,141 +8,136 @@
 #include <ESP32Time.h>
 #include "draw_scale.h"
 
+ESP32Time rtc(0);
 
-//编写函数
-  void led_init(void)
+
+// 编写函数
+void led_init(void)
+{
+  for (int i = 0; i < 5; i++)
   {
-    for(int i=0;i<5;i++)
+    pinMode(led_pin[i], OUTPUT);
+    digitalWrite(led_pin[i], HIGH);
+  }
+}
+
+void led_mode(int mode) // 共阳极
+{
+  if (mode == 1)
+  {
+    for (int i = 0; i < 5; i++)
     {
-      pinMode(led_pin[i],OUTPUT);
+      digitalWrite(led_pin[i], LOW);
+      for (int j = 0; j < 5 && j != i; j++)
+      {
+        digitalWrite(led_pin[j], HIGH);
+      }
+      delay(200);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
       digitalWrite(led_pin[i], HIGH);
     }
   }
-
-  void led_mode(int mode)          //共阳极
-  {
-    if(mode==1)
-    {
-      for(int i=0;i<5;i++)
-      {
-        digitalWrite(led_pin[i], LOW);
-        for(int j=0;j<5&&j!=i;j++)
-        {
-          digitalWrite(led_pin[j], HIGH);   
-        }
-        delay(200);
-      }
-      
-      for(int i=0;i<5;i++)
-      {
-        digitalWrite(led_pin[i], HIGH);   
-      }
-      
-    }
-    // else if(mode==2)
-    // {
-    // digitalWrite(LED1, HIGH);
-    // digitalWrite(LED2, HIGH);
-    // digitalWrite(LED3, HIGH);
-    // digitalWrite(LED4, HIGH);
-    // digitalWrite(LED5, HIGH);
-    // }
-   
-    
-  }
-
-
-
+  // else if(mode==2)
+  // {
+  // digitalWrite(LED1, HIGH);
+  // digitalWrite(LED2, HIGH);
+  // digitalWrite(LED3, HIGH);
+  // digitalWrite(LED4, HIGH);
+  // digitalWrite(LED5, HIGH);
+  // }
+}
 
 String city;
 String weather_condition;
-String winddirection;
-int tem;
+String humidity;
+String temperature;
 
 void attain_weather(String url)
 {
-   HTTPClient http;
-   if (WiFi.status() == WL_CONNECTED)
+  HTTPClient http;
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    // 设置目标网站的URL
+    http.begin(url);
+
+    // 发起GET请求并等待响应
+    int httpCode = http.GET();
+
+    if (httpCode > 0)
     {
-      // 设置目标网站的URL
-      http.begin(url);
-
-      // 发起GET请求并等待响应
-      int httpCode = http.GET();
-      
-        if (httpCode > 0) 
+      if (httpCode == HTTP_CODE_OK)
+      {
+        // 获取响应的内容
+        String response = http.getString();
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, response);
+        if (error)
         {
-          if (httpCode == HTTP_CODE_OK)
-          {
-            // 获取响应的内容
-            String response = http.getString();
-            JsonDocument doc;
-            DeserializationError error=deserializeJson(doc, response);
-            if (error) {
-            Serial.print("JSON解析失败: ");
-            Serial.println(error.c_str());
-            return; // 解析失败则退出函数
-            }
-
-            city = doc["lives"][0]["city"].as<String>();
-            weather_condition = doc["lives"][0]["weather"].as<String>();
-            tem = doc["lives"][0]["temperature"];
-            winddirection = doc["lives"][0]["winddirection"].as<String>();
-          }
+          Serial.print("JSON解析失败: ");
+          Serial.println(error.c_str());
+          return; // 解析失败则退出函数
         }
-          
+
+        city = doc["lives"][0]["city"].as<String>();
+        weather_condition = doc["lives"][0]["weather"].as<String>();
+        temperature = doc["lives"][0]["temperature"].as<String>();
+        humidity = doc["lives"][0]["humidity"].as<String>();
+      }
     }
+    http.end();
+  }
 }
 
 String date_information;
 String date;
-int hour=0,minute=0,second=0;
-int year=0,month=0,day=0;
-int code=0;
+int hour = 0, minute = 0, second = 0;
+int year = 0, month = 0, day = 0;
+int code = 0;
+String weekday;
 
 void attain_time(String url)
 {
-HTTPClient http;
-   if (WiFi.status() == WL_CONNECTED)
+  HTTPClient http;
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    // 设置目标网站的URL
+    http.begin(url);
+
+    // 发起GET请求并等待响应
+    int httpCode = http.GET();
+
+    if (httpCode > 0)
     {
-      // 设置目标网站的URL
-      http.begin(url);
-
-      // 发起GET请求并等待响应
-      int httpCode = http.GET();
-
-        if (httpCode > 0) 
+      if (httpCode == HTTP_CODE_OK)
+      {
+        // 获取响应的内容
+        String response = http.getString();
+        // DynamicJsonDocument doc(1024);
+        // DeserializationError error = deserializeJson(doc, response);
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, response);
+        if (error)
         {
-          if (httpCode == HTTP_CODE_OK)
-          {
-            // 获取响应的内容
-            String response = http.getString();
-            // DynamicJsonDocument doc(1024);
-            // DeserializationError error = deserializeJson(doc, response);
-            JsonDocument doc;
-            DeserializationError error = deserializeJson(doc, response);
-            if (error) {
-            Serial.print("JSON解析失败: ");
-            Serial.println(error.c_str());
-            return; // 解析失败则退出函数
-            }
-
-            date_information = doc["msg"].as<String>();
-            
-            date = date_information.substring(0,10);
-            year = date_information.substring(0,4).toInt();
-            month = date_information.substring(5,7).toInt();
-            day = date_information.substring(8,10).toInt();
-            hour = date_information.substring(11,13).toInt();
-            minute = date_information.substring(14,16).toInt();
-            second = date_information.substring(17,19).toInt();
-
-            Serial.println(hour);
-            Serial.println(minute);
-            Serial.println(second);
-            
-          }
+          Serial.print("JSON解析失败: ");
+          Serial.println(error.c_str());
+          return; // 解析失败则退出函数
         }
-          
+
+        date_information = doc["date"].as<String>();
+
+        date = date_information.substring(0, 10);
+        year = date_information.substring(0, 4).toInt();
+        month = date_information.substring(5, 7).toInt();
+        day = date_information.substring(8, 10).toInt();
+        hour = date_information.substring(11, 13).toInt();
+        minute = date_information.substring(14, 16).toInt();
+        second = date_information.substring(17, 19).toInt();
+        weekday = doc["weekday"].as<String>();
+      }
     }
+    http.end();
+  }
 }

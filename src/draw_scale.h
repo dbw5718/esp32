@@ -18,11 +18,10 @@ extern lv_obj_t * ui_weather_icon_label;
 
 // 函数声明
 void create_weather_ui(void);
-void update_weather_data(const char * city, const char * weather, 
-                         const char * time, const char * date,
-                         const char * temp, const char * humi);
-
 void update_weather(String weather_condition);
+void update_week(String weekday);
+void update_time(String hour,String minute);
+void update_tem_hum(String temperature,String humidity);
                          
 
 #endif // DRAW_SCALE_H
