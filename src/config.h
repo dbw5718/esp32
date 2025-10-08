@@ -16,7 +16,7 @@
 #define TFT_RST_PIN   4   
 
 /* LVGL缓冲区配置（增大缓冲区避免刷新卡住）*/
-#define BUF_LINE_COUNT 15  // 缓冲区行数（15行足够支撑刻度绘制）
+#define BUF_LINE_COUNT 8  // 缓冲区行数（15行足够支撑刻度绘制）
 static lv_color_t draw_buf[BUF_LINE_COUNT * TFT_HOR_RES];  
 
 // 1. 将LVGL专属内存池从16KB增大到24KB或32KB
