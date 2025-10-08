@@ -13,9 +13,9 @@ lv_obj_t *time_label;
 lv_obj_t *tem_hum_label;
 
 // 临时缓冲区（仅用于拼接字符串，避免重复定义）
-static char time_buf[32] = {0};  // 时间拼接缓冲区
-static char week_buf[32] = {0};  // 星期/日期拼接缓冲区
-static char tem_hum_buf[32] = {0};// 温湿度拼接缓冲区
+static char time_buf[32] = {0};    // 时间拼接缓冲区
+static char week_buf[32] = {0};    // 星期/日期拼接缓冲区
+static char tem_hum_buf[32] = {0}; // 温湿度拼接缓冲区
 
 /**
  * 创建UI布局（仅初始化时执行一次，所有控件只创建一次）
@@ -24,8 +24,8 @@ void create_weather_ui(void)
 {
     // 1. 创建城市标签（固定显示“临沂”，也可读取basic的city变量）
     city_label = lv_label_create(lv_screen_active());
-    lv_label_set_recolor(city_label, true);          // 允许文字变色
-    lv_label_set_text(city_label, "#0000ff Linyi");   // 直接用char字符串，无需String
+    lv_label_set_recolor(city_label, true);         // 允许文字变色
+    lv_label_set_text(city_label, "#0000ff Linyi"); // 直接用char字符串，无需String
     lv_obj_set_style_text_font(city_label, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_align(city_label, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_align(city_label, LV_ALIGN_CENTER, -80, -80); // 左上位置
@@ -58,9 +58,9 @@ void create_weather_ui(void)
     lv_obj_align(tem_hum_label, LV_ALIGN_CENTER, 0, 80); // 下位置
 
     // 初始化更新一次（确保启动时有内容）
-    update_weather(weather_condition); // 从basic读取天气（char数组）
-    update_week(weekday);              // 从basic读取星期（char数组）
-    update_time(hour, minute);         // 从basic读取时间（int）
+    update_weather(weather_condition);     // 从basic读取天气（char数组）
+    update_week(weekday);                  // 从basic读取星期（char数组）
+    update_time(hour, minute);             // 从basic读取时间（int）
     update_tem_hum(temperature, humidity); // 从basic读取温湿度（int）
 }
 
@@ -129,7 +129,7 @@ void update_week(const char *weekday)
 void update_time(int hour, int minute)
 {
     snprintf(time_buf, sizeof(time_buf), "#0000ff %02d:%02d",
-             hour, minute,second); // 格式：19:45
+             hour, minute, second); // 格式：19:45
     lv_label_set_text(time_label, time_buf);
 }
 

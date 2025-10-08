@@ -16,7 +16,7 @@ ESP32Time rtc(0);
 const int led_pin[5] = {2, 4, 5, 18, 19};
 
 // --------------- 定义 char 数组 ---------------
-char city[20] = {0};              // 初始化数组，全部为0
+char city[20] = {0}; // 初始化数组，全部为0
 char weather_condition[20] = {0};
 char weekday[20] = {0};
 
@@ -26,11 +26,9 @@ int humidity = 0;
 int year = 0, month = 0, day = 0;
 int hour = 0, minute = 0, second = 0;
 
-
 // LED函数（无需修改）
 void led_init(void) { /* ... 保持不变 ... */ }
 void led_mode(int mode) { /* ... 保持不变 ... */ }
-
 
 // --------------- 修改 attain_weather 函数 ---------------
 void attain_weather(const char *url)
@@ -77,7 +75,6 @@ void attain_weather(const char *url)
     }
 }
 
-
 // --------------- 修改 attain_time 函数 ---------------
 void attain_time(const char *url)
 {
@@ -99,7 +96,7 @@ void attain_time(const char *url)
                 http.end();
                 return;
             }
-            
+
             // 星期几同样用 strncpy
             strncpy(weekday, doc["weekday"].as<String>().c_str(), sizeof(weekday) - 1);
             weekday[sizeof(weekday) - 1] = '\0';
@@ -112,7 +109,7 @@ void attain_time(const char *url)
             hour = date_information.substring(11, 13).toInt();
             minute = date_information.substring(14, 16).toInt();
             second = date_information.substring(17, 19).toInt();
-            
+
             // 调试打印
             Serial.printf("日期: %d-%02d-%02d\n", year, month, day);
             Serial.printf("星期: %s\n", weekday);
