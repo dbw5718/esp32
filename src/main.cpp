@@ -15,7 +15,7 @@ const char *TIME_URL = "https://api.uuni.cn//api/time";
 
 // 2. 定时刷新配置（毫秒）
 #define WEATHER_REFRESH_INTERVAL 30 * 60 * 1000  // 天气：30分钟
-#define TIME_REFRESH_INTERVAL    10 * 1000       // 时间：10秒
+#define TIME_REFRESH_INTERVAL    30 * 1000       // 时间：30秒
 #define WIFI_RETRY_MAX           5                // WiFi最大重试次数（避免阻塞）
 
 // 3. 全局时间戳变量（记录上次刷新时间）

@@ -129,7 +129,7 @@ void update_week(const char *weekday)
 void update_time(int hour, int minute)
 {
     snprintf(time_buf, sizeof(time_buf), "#0000ff %02d:%02d",
-             hour, minute); // 格式：19:45
+             hour, minute,second); // 格式：19:45
     lv_label_set_text(time_label, time_buf);
 }
 
