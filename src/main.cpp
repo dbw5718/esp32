@@ -14,7 +14,7 @@ const char *WEATHER_URI = "https://restapi.amap.com/v3/weather/weatherInfo?city=
 const char *TIME_URL = "https://api.uuni.cn//api/time";
 
 // 2. 定时刷新配置（毫秒）
-#define WEATHER_REFRESH_INTERVAL 3 * 60 * 60 * 1000 // 天气：30分钟
+#define WEATHER_REFRESH_INTERVAL 3 * 60 * 60 * 1000 // 天气：3小时
 #define TIME_REFRESH_INTERVAL 30 * 1000             // 时间：30秒
 #define WIFI_RETRY_MAX 5                            // WiFi最大重试次数（避免阻塞）
 
