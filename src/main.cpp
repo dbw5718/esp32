@@ -10,6 +10,8 @@
 // 定义两个字符串指针常量
 const char *name = "ZTE-KyNNUG";              // wifi名称
 const char *passwd = "zxcvbnm1234"; // wifi密码
+const char *WEATHER_URI="https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd";
+const char *TIME_URL="https://api.uuni.cn//api/time";
 
 void setup()
 {
@@ -21,8 +23,8 @@ void setup()
         Serial.println("trying connect....");
     }
     display_init();                                                                                                     // 初始化显示设备
-    attain_weather("https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd"); // 获取天气信息
-    attain_time("https://api.uuni.cn//api/time");
+    attain_weather(WEATHER_URI); // 获取天气信息
+    attain_time(TIME_URL);
     create_weather_ui(); // 创建天气UI布局
 
     WiFi.mode(WIFI_OFF);           //获取信息后断开网络减小开销
