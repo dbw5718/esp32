@@ -74,8 +74,8 @@ void update_weather(const char *weather_cond)
         lv_img_set_src(weather_img, &Sunny);
     else if (strcmp(weather_cond, "多云") == 0)
         lv_img_set_src(weather_img, &Cloudy);
-    else if(strcpm(weather_img,"晴间多云")==0)
-        lv_img_set_src(weather_img,&Partly_Cloudy);
+    else if (strcpm(weather_img, "晴间多云") == 0)
+        lv_img_set_src(weather_img, &Partly_Cloudy);
     else if (strcmp(weather_cond, "阴") == 0)
         lv_img_set_src(weather_img, &Overcast);
     else if (strcmp(weather_cond, "小雨") == 0)
