@@ -11,6 +11,7 @@
  */
 extern const lv_image_dsc_t Sunny;
 extern const lv_image_dsc_t Cloudy;
+extern const lv_image_dsc_t Partly_Cloudy;
 extern const lv_image_dsc_t Snowstorm;
 extern const lv_image_dsc_t Sleet;
 extern const lv_image_dsc_t Overcast;
@@ -21,6 +22,7 @@ extern const lv_image_dsc_t Light_Snow;
 extern const lv_image_dsc_t Light_Rain;
 extern const lv_image_dsc_t Heavy_Snow;
 extern const lv_image_dsc_t Heavy_Rain;
+extern const lv_image_dsc_t Storm;
 extern const lv_image_dsc_t Foggy;
 extern const lv_image_dsc_t Haze;
 extern const lv_image_dsc_t Duststorm;
