@@ -73,7 +73,9 @@ void update_weather(const char *weather_cond)
     if (strcmp(weather_cond, "晴") == 0)
         lv_img_set_src(weather_img, &Sunny);
     else if (strcmp(weather_cond, "多云") == 0)
-        lv_img_set_src(weather_img, &Partly_Cloudy);
+        lv_img_set_src(weather_img, &Cloudy);
+    else if(strcpm(weather_img,"晴间多云")==0)
+        lv_img_set_src(weather_img,&Partly_Cloudy);
     else if (strcmp(weather_cond, "阴") == 0)
         lv_img_set_src(weather_img, &Overcast);
     else if (strcmp(weather_cond, "小雨") == 0)
@@ -82,12 +84,22 @@ void update_weather(const char *weather_cond)
         lv_img_set_src(weather_img, &Moderate_Rain);
     else if (strcmp(weather_cond, "大雨") == 0)
         lv_img_set_src(weather_img, &Heavy_Rain);
+    else if (strcmp(weather_cond, "暴雨") == 0)
+        lv_img_set_src(weather_img, &Storm);
     else if (strcmp(weather_cond, "小雪") == 0)
         lv_img_set_src(weather_img, &Light_Snow);
     else if (strcmp(weather_cond, "大雪") == 0)
         lv_img_set_src(weather_img, &Heavy_Snow);
+    else if (strcmp(weather_cond, "暴雪") == 0)
+        lv_img_set_src(weather_img, &Snowstorm);
+    else if (strcmp(weather_cond, "雨夹雪") == 0)
+        lv_img_set_src(weather_img, &Sleet);
     else if (strcmp(weather_cond, "雾") == 0)
         lv_img_set_src(weather_img, &Foggy);
+    else if (strcmp(weather_cond, "沙尘暴") == 0)
+        lv_img_set_src(weather_img, &Duststorm);
+    else if (strcmp(weather_cond, "霾") == 0)
+        lv_img_set_src(weather_img, &Haze);
     else
         lv_img_set_src(weather_img, &unknow); // 未匹配时显示默认图标
 }
