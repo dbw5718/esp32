@@ -1,6 +1,5 @@
 #include "draw_scale.h"
 #include <cstring>
-#include "my_chinese_font_16.h" // 确保字体文件路径正确
 #include "weather_icons.h"      // 确保图标文件路径正确
 #include <Arduino.h>
 #include "basic.h"
