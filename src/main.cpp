@@ -8,8 +8,10 @@
 #include <ESP32Time.h>
 
 // 1. WiFi配置
-const char *WIFI_NAME = "ZTE-KyNNUG";  // WiFi名称
-const char *WIFI_PASS = "zxcvbnm1234"; // WiFi密码
+//const char *WIFI_NAME = "ZTE-KyNNUG";  // WiFi名称
+const char *WIFI_NAME ="301";
+//const char *WIFI_PASS = "zxcvbnm1234"; // WiFi密码
+const char *WIFI_PASS = "Chrome1314...@"; // WiFi密码
 const char *WEATHER_URI = "https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd";
 const char *TIME_URL = "https://api.uuni.cn//api/time";
 
