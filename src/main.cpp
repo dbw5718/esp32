@@ -8,14 +8,16 @@
 #include <ESP32Time.h>
 
 // 1. WiFi配置
-const char *WIFI_NAME = "ZTE-KyNNUG";  // WiFi名称
-const char *WIFI_PASS = "zxcvbnm1234"; // WiFi密码
+//const char *WIFI_NAME = "ZTE-KyNNUG";  // WiFi名称
+const char *WIFI_NAME = "301";  // WiFi名称
+//const char *WIFI_PASS = "zxcvbnm1234"; // WiFi密码
+const char *WIFI_PASS = "Chrome1314...@"; // WiFi密码
 const char *WEATHER_URI = "https://restapi.amap.com/v3/weather/weatherInfo?city=371300&key=6a86d8c29d5163008cba8bac08a09cdd";
 const char *TIME_URL = "https://api.uuni.cn//api/time";
 
 // 2. 定时刷新配置（毫秒）
-#define WEATHER_REFRESH_INTERVAL 3 * 60 * 60 * 1000 // 天气：3小时
-#define TIME_REFRESH_INTERVAL 30 * 1000             // 时间：30秒
+#define WEATHER_REFRESH_INTERVAL 1 * 60 * 60 * 1000 // 天气：1小时
+#define TIME_REFRESH_INTERVAL 10 * 1000             // 时间：10秒
 #define WIFI_RETRY_MAX 5                            // WiFi最大重试次数（避免阻塞）
 
 // 3. 全局时间戳变量（记录上次刷新时间）
